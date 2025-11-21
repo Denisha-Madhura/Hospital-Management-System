@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary">Manage Doctor Profiles</h1>
+<p class="lead">Add new doctors and view/edit existing staff details.</p>
+
+<div class="row">
+
+    <div class="col-md-5">
+        <div class="card p-3 shadow-sm mb-4">
+            <h5 class="card-title text-success">Add New Doctor</h5>
+            <form method="POST" action="{{ url_for('manage_doctors') }}">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username (Login ID)</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Temporary Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contact_info" class="form-label">Contact Info</label>
+                    <input type="text" class="form-control" id="contact_info" name="contact_info" placeholder="Email or Phone">
+                </div>
+                <div class="mb-3">
+                    <label for="specialization_id" class="form-label">Specialization</label>
+                    <select class="form-select" id="specialization_id" name="specialization_id" required>
+                        <option value="">Select Department</option>
+                        {% for dept in departments %}
+                            <option value="{{ dept['id'] }}">{{ dept['name'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success w-100 shadow-sm">Add Doctor</button>
+            </form>
+        </div>
+    </div>
+    
+    
+    <div class="col-md-7">
+        <h5 class="mb-3 text-info">Existing Doctors ({{ doctors|length }})</h5>
+        <div class="list-group">
+            {% for doctor in doctors %}
+            <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-bold">{{ doctor['name'] }}</span> 
+                    <span class="badge bg-primary ms-2">{{ doctor['specialization'] }}</span>
+                    <small class="d-block text-muted">Username: {{ doctor['username'] }}</small>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-sm btn-outline-secondary me-2">Edit</a>
+                    <a href="#" class="btn btn-sm btn-outline-danger">Remove</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="alert alert-warning text-center">No doctors registered yet. Please add one above.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back to Admin Dashboard</a>
+</div>
+{% endblock %}

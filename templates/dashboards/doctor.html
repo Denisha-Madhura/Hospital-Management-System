@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary">Doctor Dashboard</h1>
+<p class="lead">Welcome, **Dr. {{ g.user['name'] }}**! ({% if g.user['contact_info'] %}{{ g.user['contact_info'] }}{% else %}No contact set{% endif %})</p>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Upcoming Appointments (Booked)</h5>
+            </div>
+            <div class="card-body">
+                {% if upcoming_appointments %}
+                    <ul class="list-group list-group-flush">
+                        {% for appt in upcoming_appointments %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold">{{ appt['date'] }} at {{ appt['time'] }}</span>
+                                    <br><small>Patient: {{ appt['patient_name'] }} ({{ appt['contact_info'] }})</small>
+                                </div>
+                                <div>
+                                    <a href="#" class="btn btn-sm btn-success">Mark Complete</a>
+                                    <a href="#" class="btn btn-sm btn-danger">Cancel</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-light text-center">No upcoming appointments found.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">My Assigned Patients ({{ patient_list|length }})</h5>
+            </div>
+            <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                {% if patient_list %}
+                    <ul class="list-group list-group-flush">
+                        {% for patient in patient_list %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ patient['name'] }}</span>
+                                <a href="#" class="btn btn-sm btn-outline-info">View History</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-light text-center">No patients have booked appointments with you yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Set Availability ({{ today }} - {{ end_date }})</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('doctor_availability') }}" class="mb-3">
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label for="date" class="form-label visually-hidden">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required min="{{ today }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="start_time" class="form-label visually-hidden">Start Time</label>
+                            <input type="time" class="form-control" id="start_time" name="start_time" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="end_time" class="form-label visually-hidden">End Time</label>
+                            <input type="time" class="form-control" id="end_time" name="end_time" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success w-100">Set</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <h6 class="mt-4">Current Available Slots:</h6>
+                {% if availability_slots %}
+                    <ul class="list-group list-group-flush" style="max-height: 100px; overflow-y: auto;">
+                        {% for slot in availability_slots %}
+                            <li class="list-group-item py-1 small d-flex justify-content-between align-items-center">
+                                <span>{{ slot['date'] }}</span>
+                                <span class="badge bg-light text-dark">{{ slot['start_time'] }} - {{ slot['end_time'] }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="small text-muted">No availability set for the next 7 days.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

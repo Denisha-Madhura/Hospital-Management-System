@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary">Admin Dashboard</h1>
+<p class="lead">System Overview and Management Tools.</p>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-info shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Doctors</h5>
+                <p class="card-text display-4">{{ doctor_count }}</p>
+                <!-- UPDATED LINK -->
+                <a href="{{ url_for('manage_doctors') }}" class="stretched-link text-white-50 small">Manage Doctors</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-success shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Patients</h5>
+                <p class="card-text display-4">{{ patient_count }}</p>
+                <a href="#" class="stretched-link text-white-50 small">Manage Patients</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-warning shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Appointments</h5>
+                <p class="card-text display-4">{{ appointment_count }}</p>
+                <a href="#" class="stretched-link text-white-50 small">Manage Appointments</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mb-3 text-secondary">Admin Actions</h2>
+<div class="list-group">
+    <a href="{{ url_for('manage_doctors') }}" class="list-group-item list-group-item-action">
+        <span class="fw-bold">Add/Update Doctor Profile</span>
+        <span class="float-end text-muted small">Manage staff specialization and details</span>
+    </a>
+    <a href="#" class="list-group-item list-group-item-action">
+        <span class="fw-bold">View All Appointments</span>
+        <span class="float-end text-muted small">Filter by upcoming, past, or cancelled status</span>
+    </a>
+    <a href="#" class="list-group-item list-group-item-action">
+        <span class="fw-bold">Search Users (Patient/Doctor)</span>
+        <span class="float-end text-muted small">Find details by name, ID, or contact</span>
+    </a>
+</div>
+
+{% endblock %}

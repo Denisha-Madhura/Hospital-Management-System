@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class = "col-lg-8 mx-auto text-center">
+        <h1 class="display-3 text-primary">Hospital Management System</h1>
+        <p class="lead mb-4"> Efficiently managing Patients, Doctors, And Appointments </p>
+
+        {% if g.user %}
+            <p class="fs-4">Welcome back, **{{ g.user['name'] }}**</p>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-lg mt-3 shadow">Go to Dashboard</a>
+        {% else %}
+            <p class="fs-5">Please log in to access the system functionalities for your role</p>
+            <a href="{{ url_for('login') }}" class="'btn btn-outline-primary btn-lg mt-3 me-3 shadow">Log in</a>
+            <a href="{{ url_for('patient_dashboard') }}" class="btn btn-outline-primary btn-ln mt-3 shadow">Patient Registeration</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

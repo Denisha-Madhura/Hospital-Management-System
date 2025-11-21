@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card p-4 shadow-lg">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4 text-primary">System Login</h2>
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control rounded-pill" id="username" name="username" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control rounded-pill" id="password" name="password" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg rounded-pill shadow-sm">Log in</button>
+                    </div>
+                </form>
+                <div class="mt-4 text-center">
+                    <a href="{{ url_for('patient_dashboard') }}" class="text-muted small">New Patient? Register Here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary">Patient Portal</h1>
+
+{% if g.user and g.user['role'] == 'Patient' %}
+
+    <p class="lead">Welcome, **{{ g.user['name'] }}**! Manage your appointments and view history.</p>
+
+    <div class="row mt-4">
+        
+        <div class="col-md-6 mb-4">
+            <div class="card p-3 shadow-sm h-100">
+                <h5 class="card-title text-success">Upcoming Appointments ({{ upcoming_appointments|length }})</h5>
+                {% if upcoming_appointments %}
+                    <ul class="list-group list-group-flush" style="max-height: 250px; overflow-y: auto;">
+                        {% for appt in upcoming_appointments %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold">{{ appt['date'] }} at {{ appt['time'] }}</span>
+                                    <br><small>Dr. {{ appt['doctor_name'] }} ({{ appt['specialization'] }})</small>
+                                </div>
+                                <div>
+                                    <a href="#" class="btn btn-sm btn-danger">Cancel</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-light mt-2">You have no upcoming appointments.</div>
+                {% endif %}
+                <a href="{{ url_for('patient_book_appointment') }}" class="btn btn-outline-success mt-3">Book New Appointment</a>
+            </div>
+        </div>
+        
+        <!-- Treatment History -->
+        <div class="col-md-6 mb-4">
+            <div class="card p-3 shadow-sm h-100">
+                <h5 class="card-title text-info">Appointment History ({{ appointment_history|length }})</h5>
+                {% if appointment_history %}
+                    <div class="accordion" id="historyAccordion" style="max-height: 400px; overflow-y: auto;">
+                        {% for appt in appointment_history %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-{{ appt['appt_id'] }}">
+                                <button class="accordion-button {% if not loop.first %}collapsed{% endif %} py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ appt['appt_id'] }}" aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" aria-controls="collapse-{{ appt['appt_id'] }}">
+                                    <span class="badge bg-{{ 'primary' if appt['status'] == 'Completed' else 'danger' }} me-2">{{ appt['status'] }}</span>
+                                    <strong class="me-auto">{{ appt['date'] }}</strong> with Dr. {{ appt['doctor_name'] }}
+                                </button>
+                            </h2>
+                            <div id="collapse-{{ appt['appt_id'] }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading-{{ appt['appt_id'] }}" data-bs-parent="#historyAccordion">
+                                <div class="accordion-body small">
+                                    <p class="mb-1"><strong>Specialization:</strong> {{ appt['specialization'] }}</p>
+                                    {% if appt['status'] == 'Completed' %}
+                                        <hr class="my-1">
+                                        <p class="mb-1"><strong>Diagnosis:</strong> {{ appt['diagnosis'] or 'N/A' }}</p>
+                                        <p class="mb-1"><strong>Prescription:</strong> {{ appt['prescription'] or 'N/A' }}</p>
+                                    {% else %}
+                                        <p class="text-danger mt-2">No treatment record available (Appointment {{ appt['status'] }}).</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-light mt-2">No past appointment history found.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+{% else %}
+    
+    <h2 class="mb-4 text-secondary">New Patient Registration</h2>
+    <div class="card p-4 shadow-lg">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('register') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="contact_info" class="form-label">Contact (Email/Phone)</label>
+                        <input type="text" class="form-control" id="contact_info" name="contact_info" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="username" class="form-label">Desired Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required minlength="4">
+                        <div class="form-text">Choose a unique username for logging in.</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                    </div>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">Register</button>
+                </div>
+            </form>
+            
+            <div class="mt-4 text-center">
+                Already have an account? <a href="{{ url_for('login') }}" class="text-primary fw-bold">Login Here</a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
