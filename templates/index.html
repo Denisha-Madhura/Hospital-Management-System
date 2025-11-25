@@ -2,18 +2,26 @@
 
 {% block content %}
 <div class="row mt-5">
-    <div class = "col-lg-8 mx-auto text-center">
+    <div class="col-lg-8 mx-auto text-center">
         <h1 class="display-3 text-primary">Hospital Management System</h1>
-        <p class="lead mb-4"> Efficiently managing Patients, Doctors, And Appointments </p>
-
+        <p class="lead mb-4">Efficiently managing Patients, Doctors, and Appointments.</p>
+        
         {% if g.user %}
-            <p class="fs-4">Welcome back, **{{ g.user['name'] }}**</p>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-lg mt-3 shadow">Go to Dashboard</a>
+            <p class="fs-4">Welcome back, **{{ g.user['name'] }}**!</p>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg mt-3 shadow">Go to Dashboard</a>
         {% else %}
-            <p class="fs-5">Please log in to access the system functionalities for your role</p>
-            <a href="{{ url_for('login') }}" class="'btn btn-outline-primary btn-lg mt-3 me-3 shadow">Log in</a>
-            <a href="{{ url_for('patient_dashboard') }}" class="btn btn-outline-primary btn-ln mt-3 shadow">Patient Registeration</a>
+            <p class="fs-5">Please log in to access the system functionalities for your role (Admin, Doctor, or Patient).</p>
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg mt-3 me-3 shadow">Log In</a>
+            <a href="{{ url_for('patient_dashboard') }}" class="btn btn-outline-primary btn-lg mt-3 shadow">Patient Registration</a>
         {% endif %}
+
+        <div class="mt-5 p-4 bg-white rounded-3 shadow-sm">
+            <h2 class="h5">Quick Access Information</h2>
+            <p class="text-muted small mb-0">
+                Admin credentials for testing (created programmatically in `models.py`):<br>
+                **Username**: `admin` | **Password**: `adminpassword`
+            </p>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -3,46 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title | default('Hospital Management System') }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>{{ title | default('HMS - Hospital Management System') }}</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Custom Styles (optional, for basic aesthetic improvements) -->
     <style>
-        body{
-            font-family : 'Inter', sans-serif;
-            background-color: rgb(53, 53, 53);
-            color: white;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
         }
-
-        .navbar{
+        .navbar-brand {
             font-weight: 700;
-            background-color: rgb(46, 4, 119);
         }
-
-        .container-main{
+        .container-main {
             padding-top: 20px;
             padding-bottom: 50px;
         }
-
-        .card{
+        .card {
             border-radius: 0.75rem;
-            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.05);
-        }
-        .btn{
-            background-color: rgb(46, 4, 119);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
     </style>
 </head>
 <body>
-    <nav class = "navbar navbar-expand-lg navbar-dark shadown-sm">
-        <div class = "container">
-            <p>HMS</p>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart-pulse-fill me-2" viewBox="0 0 16 16">
+                    <path d="M1.475 9C2.702 10.849 4.779 12.878 7.64 15.654.569 15.654 13.331 10.849 14.524 9H16L12.7 6.136 10.457 8.24l-.999-3.136L7.44 7.668 6.137 4.546 4 6.31 1.475 9Z"/>
+                </svg>
+                HMS
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class = "collapse navbar-collapse" id="navbarNav">
-                <ul class = "navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
                     {% if g.user %}
                     <li class="nav-item">
-                        <span class="nav-link disabled text-white-50">Logged in as : {{ g.user['username'] }} ({{ g.user['role'] }})</span>
+                        <span class="nav-link disabled text-white-50">Logged in as: {{ g.user['username'] }} ({{ g.user['role'] }})</span>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-sm btn-outline-light ms-2" href="{{ url_for('dashboard') }}">Dashboard</a>
@@ -56,6 +57,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-outline-light ms-2" href="{{ url_for('patient_dashboard') }}">Patient Register</a>
+                        <!-- Temporarily redirecting to patient dashboard for registration -->
                     </li>
                     {% endif %}
                 </ul>
@@ -64,7 +66,9 @@
     </nav>
 
     <div class="container container-main">
-        {% with messages = get_flashed_message(with_categories=true) %}
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %} 
+        <!-- NOTE: Ensure this is get_flashed_messages (plural) -->
             {% if messages %}
                 <div class="row">
                     <div class="col-md-8 mx-auto">
@@ -78,10 +82,12 @@
             {% endif %}
         {% endwith %}
 
+        <!-- Main Content Block -->
         {% block content %}{% endblock %}
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
 </body>
 </html>

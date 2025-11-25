@@ -5,6 +5,7 @@
 <p class="lead">Welcome, **Dr. {{ g.user['name'] }}**! ({% if g.user['contact_info'] %}{{ g.user['contact_info'] }}{% else %}No contact set{% endif %})</p>
 
 <div class="row">
+    <!-- Upcoming Appointments -->
     <div class="col-md-6 mb-4">
         <div class="card shadow-sm h-100">
             <div class="card-header bg-primary text-white">
@@ -33,8 +34,10 @@
         </div>
     </div>
     
+    <!-- Patient List & Availability Management -->
     <div class="col-md-6 mb-4">
         
+        <!-- Patient List -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-info text-white">
                 <h5 class="mb-0">My Assigned Patients ({{ patient_list|length }})</h5>
@@ -55,6 +58,7 @@
             </div>
         </div>
 
+        <!-- Availability Management -->
         <div class="card shadow-sm">
             <div class="card-header bg-secondary text-white">
                 <h5 class="mb-0">Set Availability ({{ today }} - {{ end_date }})</h5>
